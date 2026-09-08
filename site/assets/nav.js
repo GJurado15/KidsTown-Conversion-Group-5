@@ -20,7 +20,7 @@
     { label: "ToyStore", icon: "navbtn_toystore.gif", built: false },
     { label: "CityPark", icon: "navbtn_citypark.gif", built: true, href: SITE_ROOT + "citypark/index.html" },
     { label: "TownShip", icon: "navbtn_township.gif", built: false },
-    { label: "Museum", icon: "navbtn_museum.gif", built: false },
+    { label: "Museum", icon: "navbtn_museum.gif", built: true, href: SITE_ROOT + "museum/index.html" },
     { label: "Help", icon: "navbtn_help.gif", built: true, href: SITE_ROOT + "help.html" },
   ];
 
