@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown City Park: Interactive Text Story</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="story-data.js" defer></script>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page">
+  <h1 class="center" id="story-title"></h1>
+  <div class="citypark-page" id="story-body"></div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const name = localStorage.getItem("citypark_name") || "My friend";
+    const page = Number(new URLSearchParams(window.location.search).get("page")) || 1;
+    const body = STORY_PAGES[page];
+
+    document.getElementById("story-title").textContent = name + "'s Big Journey";
+
+    if (!body) {
+      document.getElementById("story-body").innerHTML =
+        "<p>That page of the journey doesn't exist. <a href=\"?page=1\">Start over</a>?</p>";
+      return;
+    }
+
+    document.getElementById("story-body").innerHTML = body.split("{{name}}").join(name);
+  });
+</script>
+
+</body>
+</html>

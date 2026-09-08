@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown City Park: Your Big Journey</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center">
+  <h1>KidsTown City Park - Your Big Journey</h1>
+
+  <form id="start-form" class="citypark-form">
+    <font size="+2">
+    <hr>
+    Hello, and welcome to the KidsTown City Park. You are about to go on a
+    big journey through the park. To get started, click in the box below this
+    paragraph and type in your first name. Then, put your mouse over the
+    "Let's Go" button and click.
+    <br><br>
+    <input type="text" id="visitor-name" name="name" size="10" autocomplete="off">
+    <input type="submit" value=" Let's Go !! ">
+    <hr>
+    </font>
+  </form>
+</div>
+
+<script>
+  document.getElementById("start-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const name = document.getElementById("visitor-name").value.trim() || "My friend";
+    localStorage.setItem("citypark_name", name);
+    window.location.href = "story.html?page=1";
+  });
+</script>
+
+</body>
+</html>

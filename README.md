@@ -59,11 +59,32 @@ The replacement:
   pre-deploy step (e.g. a small Node or Python script), never at request
   time.
 
+## Replacement site
+
+The new static implementation lives under [`site/`](site/) and reuses the
+legacy `graphics/` folder directly (relative paths) rather than duplicating
+image assets. It is plain HTML/CSS/JS — no framework, no build step.
+
+- `site/index.html`, `about.html`, `participants.html`, `help.html` — the
+  Home room, ported from `scripts/home/*.pl`.
+- `site/citypark/` — the City Park interactive story, ported from
+  `scripts/citypark/*.pl` + `data/citypark/page1-18`. The visitor's name is
+  stored in `localStorage` instead of being threaded through every URL
+  (the original passed `name`/`xname` on every link only because CGI is
+  stateless) — see `story-data.js` for how the story content and
+  page-to-page links are defined.
+- `site/assets/nav.js` — shared nav bar. Rooms not yet migrated render
+  greyed-out with a "(coming soon)" label; flip a room's `built` flag once
+  it's ready.
+- Root `index.html` is untouched for now (still the legacy demo showing the
+  broken CGI link) until enough rooms are migrated to cut over.
+
 ## Progress log
 
 | Date | Change |
 |------|--------|
 | 2026-09-08 | Imported full legacy history from `MetroCS/kidstown_cgi`; enabled GitHub Pages; completed lightest-pass architecture scan; drafted replacement architecture plan above. |
+| 2026-09-08 | Built the first two replacement sections under `site/`: Home (nav, town map, about, participants, help) and City Park (name-entry form + 18-page branching story). Verified in a headless browser — all pages, links, and images resolve correctly. |
 
 ---
 
