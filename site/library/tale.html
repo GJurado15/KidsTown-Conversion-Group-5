@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Library: Wacky Web Tale</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="tale-data.js" defer></script>
+<style>body { background: #A2F9CD; } select, input[type="text"] { font-size: 1em; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page" id="content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/library/";
+  const key = new URLSearchParams(window.location.search).get("state");
+  const tale = TALES[key];
+  const container = document.getElementById("content");
+
+  if (!tale) {
+    container.innerHTML = '<p>Unknown tale. <a href="index.html">Back to the Library</a>.</p>';
+    return;
+  }
+
+  document.title = "KidsTown Library: " + tale.name + " Wacky Web Tale";
+
+  function renderForm() {
+    const fieldsHtml = tale.fields
+      .map((f) => {
+        const input =
+          f.type === "text"
+            ? '<input type="text" name="' + f.name + '" size="15">'
+            : '<select name="' + f.name + '">' + f.options.map((o) => "<option>" + o + "</option>").join("") + "</select>";
+        return "<p>" + f.prefix + input + (f.suffix || "") + "</p>";
+      })
+      .join("");
+
+    container.innerHTML =
+      '<h1 class="center">KidsTown Library: ' + tale.name + " Wacky Web Tale</h1>" +
+      '<table style="margin:0 auto;"><tr>' +
+      '<td><img src="' + GFX + tale.map + '" width="176" height="99" alt="' + tale.name + '"></td>' +
+      '<td><font size="+5" color="' + tale.titleColor + '"><em>' + tale.name + "</em></font></td>" +
+      "</tr></table>" +
+      '<h3>Welcome to ' + tale.name + "'s Wacky Web Tale. Select or type your answers below, then click " +
+      '"Present Tale" to see your story. Some choices will make more sense than others &mdash; try a few combinations!</h3>' +
+      '<form id="tale-form">' + fieldsHtml + '<p class="center"><input type="submit" value="Present Tale!"></p></form>' +
+      '<p class="center"><a href="state.html?state=' + tale.stateNum + '">Back to ' + tale.name + "</a></p>";
+
+    document.getElementById("tale-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const values = {};
+      tale.fields.forEach((f) => {
+        values[f.name] = e.target.elements[f.name].value;
+      });
+      renderStory(values);
+    });
+  }
+
+  function renderStory(values) {
+    container.innerHTML =
+      '<h1 class="center">KidsTown Library: Wacky Web Tale: ' + tale.name + "</h1>" +
+      '<h3>The following are brief paragraphs based on the choices you made. Try going back and picking different words!</h3>' +
+      "<hr>" +
+      tale.render(values) +
+      '<p class="center"><a href="#" id="try-again">Back To Web Tale</a></p>';
+
+    document.getElementById("try-again").addEventListener("click", (e) => {
+      e.preventDefault();
+      renderForm();
+    });
+  }
+
+  renderForm();
+});
+</script>
+
+</body>
+</html>

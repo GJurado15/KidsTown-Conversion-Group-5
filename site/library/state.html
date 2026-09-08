@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Geography: State Information Page</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="state-data.js" defer></script>
+<style>
+  body { background: #A2F9CD; }
+  .fact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75em 2em; max-width: 600px; margin: 1.5em auto; font-size: 1.1em; }
+  .fact-grid img { vertical-align: middle; width: 32px; height: 24px; margin-right: 0.4em; }
+</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="state-content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/library/";
+  const num = Number(new URLSearchParams(window.location.search).get("state"));
+  const s = STATES[num];
+  const container = document.getElementById("state-content");
+
+  if (!s) {
+    container.innerHTML = '<p>Unknown state. <a href="index.html">Back to the U.S. map</a>.</p>';
+    return;
+  }
+
+  document.title = "KidsTown Geography: " + s.name;
+
+  const heading = s.isCapital
+    ? "<h2>Here are some interesting facts about</h2><h2>the Capital of the United States:</h2>"
+    : "<h2>Here are some interesting facts about " + s.name + "</h2>";
+
+  const activity = s.activityHref
+    ? '<p><a href="' + s.activityHref + '"><img src="' + GFX + 'school-i.gif" width="70" height="70" alt="">' +
+      "<br>Click here to play a game!</a></p>"
+    : "";
+
+  const regionLink = s.region
+    ? ' &middot; <a href="' + s.regionHref + '">Return to ' + s.region + " states map</a>"
+    : "";
+
+  container.innerHTML =
+    '<table style="margin:0 auto;"><tr>' +
+    '<td><img src="' + GFX + s.map + '" alt="' + s.name + ' map"></td>' +
+    '<td style="padding:0 1em;"><font size="+4"><b><i>' + s.name.toUpperCase() + "</i></b></font></td>" +
+    '<td><img src="' + GFX + s.flag + '" alt="' + s.name + ' flag" border="1"></td>' +
+    "</tr></table>" +
+    heading +
+    '<div class="fact-grid">' +
+    '<div><img src="' + GFX + 'building-i.gif" alt=""><b>Capital:</b> ' + s.capital + "</div>" +
+    '<div><img src="' + GFX + 'flower-i.gif" alt=""><b>Flower:</b> ' + s.flower + "</div>" +
+    '<div><img src="' + GFX + 'date-i.gif" alt=""><b>Induction Date:</b> ' + s.admitted + "</div>" +
+    '<div><img src="' + GFX + 'bird-i.gif" alt=""><b>Bird:</b> ' + s.bird + "</div>" +
+    '<div><img src="' + GFX + 'order-i.gif" alt=""><b>Order of Induction:</b> ' + s.order + "</div>" +
+    '<div><img src="' + GFX + 'tree-i.gif" alt=""><b>Tree:</b> ' + s.tree + "</div>" +
+    '<div><img src="' + GFX + 'redball-i.gif" alt=""><b>Nickname:</b> ' + s.nickname + "</div>" +
+    '<div><img src="' + GFX + 'music-i.gif" alt=""><b>Song:</b> <i>' + s.song + "</i></div>" +
+    "</div>" +
+    activity +
+    '<p><a href="index.html">Return to USA map</a>' + regionLink + "</p>";
+});
+</script>
+
+</body>
+</html>

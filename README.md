@@ -82,6 +82,12 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
   pages, and `challenge.html` (a single-question "ZooKeeper's Challenge"
   per region, driven by `challenge-data.js` and a `?region=` query param).
   `zoonav.js` renders the region sub-nav shared across zoo pages.
+- `site/library/` — the Library room: a U.S. map, 7 region pages, and
+  four generic data-driven engines rather than dozens of near-duplicate
+  files — `state.html?state=<1-51>` (state facts, from `state-data.js`),
+  `wordsearch.html?state=ak|az|ne`, `tale.html?state=ct|or|wi` (mad-libs),
+  and `fillin.html?state=ny|dc` (graded dropdown quiz). Ported from
+  `scripts/library/*.pl` + `data/library/b_state_datafile.txt`.
 - `site/assets/nav.js` — shared nav bar. Rooms not yet migrated render
   greyed-out with a "(coming soon)" label; flip a room's `built` flag once
   it's ready.
@@ -96,6 +102,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-08 | Built the first two replacement sections under `site/`: Home (nav, town map, about, participants, help) and City Park (name-entry form + 18-page branching story). Verified in a headless browser — all pages, links, and images resolve correctly. |
 | 2026-09-08 | Added the Museum section under `site/museum/`: lobby, Color Exhibition, the 6-page Rainbow story, and the Planetarium's Basic/Advanced solar-system picture quiz (ported from `wizard.pl` + `data/museum/ss1.dat`/`ss2.dat`). The quiz's session state (which questions were already played) moved from an encoded string threaded through hidden form fields into `sessionStorage`. Verified in a headless browser. |
 | 2026-09-08 | Added the Zoo section under `site/zoo/`: lobby, world map, four region pages (Africa, Australia, Ocean, Polar Regions) each with an animal encyclopedia, and a single-question "ZooKeeper's Challenge" per region ported from the `d6_*.pl` files. Verified in a headless browser. |
+| 2026-09-08 | Added the Library section under `site/library/`: US map, 7 region pages, and generic data-driven engines for all 51 state fact pages, 3 word searches (AK/AZ/NE), 3 mad-libs "Wacky Web Tales" (CT/OR/WI), and 2 fill-in-the-blank quizzes (NY/DC) — ported from the 51-record `b_state_datafile.txt` and the corresponding `.pl` scripts. Verified in a headless browser. |
 
 ---
 
