@@ -16,7 +16,7 @@
     { label: "CityHall", icon: "navbtn_cityhall.gif", built: false },
     { label: "School", icon: "navbtn_school.gif", built: false },
     { label: "Library", icon: "navbtn_library.gif", built: false },
-    { label: "Zoo", icon: "navbtn_zoo.gif", built: false },
+    { label: "Zoo", icon: "navbtn_zoo.gif", built: true, href: SITE_ROOT + "zoo/index.html" },
     { label: "ToyStore", icon: "navbtn_toystore.gif", built: false },
     { label: "CityPark", icon: "navbtn_citypark.gif", built: true, href: SITE_ROOT + "citypark/index.html" },
     { label: "TownShip", icon: "navbtn_township.gif", built: false },

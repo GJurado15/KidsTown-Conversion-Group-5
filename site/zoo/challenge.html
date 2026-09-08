@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Zoo: ZooKeeper's Challenge</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="challenge-data.js" defer></script>
+<style>
+  #challenge { max-width: 500px; margin: 0 auto; }
+  #challenge-choices { list-style: none; padding: 0; font-size: 1.2em; }
+  #challenge-choices li { margin: 0.5em 0; }
+</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center">
+  <h1>ZooKeeper's Challenge</h1>
+  <div id="challenge"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/zoo/";
+  const region = new URLSearchParams(window.location.search).get("region");
+  const challenge = ZOO_CHALLENGES[region];
+  const container = document.getElementById("challenge");
+
+  if (!challenge) {
+    container.innerHTML = '<p>Unknown region. <a href="index.html">Back to the Zoo</a>.</p>';
+    return;
+  }
+
+  function renderQuestion() {
+    const items = challenge.choices
+      .map((choice, i) => '<li><a href="#" data-choice="' + i + '">' + choice.label + "</a></li>")
+      .join("");
+
+    container.innerHTML =
+      '<p><font size="+1">' + challenge.question + "</font></p>" +
+      '<ul id="challenge-choices">' + items + "</ul>" +
+      "<p>Instructions: Please choose the answer you think is correct.</p>";
+
+    container.querySelectorAll("[data-choice]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderAnswer(challenge.choices[Number(link.dataset.choice)]);
+      });
+    });
+  }
+
+  function renderAnswer(choice) {
+    const image = choice.img ? '<p><img src="' + GFX + choice.img + '" alt="" style="max-width:250px;"></p>' : "";
+    const nextLink = choice.correct
+      ? '<p><a href="' + challenge.backHref + '">' + challenge.backLabel + "</a></p>"
+      : '<p><a href="#" id="try-again">Please try again.</a></p>';
+
+    container.innerHTML = image + '<p><font size="+1">' + choice.text + "</font></p>" + nextLink;
+
+    const tryAgain = document.getElementById("try-again");
+    if (tryAgain) {
+      tryAgain.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderQuestion();
+      });
+    }
+  }
+
+  renderQuestion();
+});
+</script>
+
+</body>
+</html>

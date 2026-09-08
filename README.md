@@ -78,6 +78,10 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
   Solar System tours) ported from `scripts/museum/wizard.pl` +
   `data/museum/ss1.dat`/`ss2.dat`. See `planetarium/quiz-data.js` for the
   question bank — add a question by appending an entry there.
+- `site/zoo/` — the Zoo room: lobby, world map, four region encyclopedia
+  pages, and `challenge.html` (a single-question "ZooKeeper's Challenge"
+  per region, driven by `challenge-data.js` and a `?region=` query param).
+  `zoonav.js` renders the region sub-nav shared across zoo pages.
 - `site/assets/nav.js` — shared nav bar. Rooms not yet migrated render
   greyed-out with a "(coming soon)" label; flip a room's `built` flag once
   it's ready.
@@ -91,6 +95,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-08 | Imported full legacy history from `MetroCS/kidstown_cgi`; enabled GitHub Pages; completed lightest-pass architecture scan; drafted replacement architecture plan above. |
 | 2026-09-08 | Built the first two replacement sections under `site/`: Home (nav, town map, about, participants, help) and City Park (name-entry form + 18-page branching story). Verified in a headless browser — all pages, links, and images resolve correctly. |
 | 2026-09-08 | Added the Museum section under `site/museum/`: lobby, Color Exhibition, the 6-page Rainbow story, and the Planetarium's Basic/Advanced solar-system picture quiz (ported from `wizard.pl` + `data/museum/ss1.dat`/`ss2.dat`). The quiz's session state (which questions were already played) moved from an encoded string threaded through hidden form fields into `sessionStorage`. Verified in a headless browser. |
+| 2026-09-08 | Added the Zoo section under `site/zoo/`: lobby, world map, four region pages (Africa, Australia, Ocean, Polar Regions) each with an animal encyclopedia, and a single-question "ZooKeeper's Challenge" per region ported from the `d6_*.pl` files. Verified in a headless browser. |
 
 ---
 
