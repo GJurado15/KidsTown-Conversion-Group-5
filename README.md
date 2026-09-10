@@ -13,6 +13,11 @@ https://gjurado15.github.io/KidsTown-Conversion-Group-5/legacy/
 GitHub Pages cannot run; kept as a live illustration of the constraint the
 replacement was designed around)*
 
+**Migration status report (for the group):**
+https://claude.ai/code/artifact/eef9e2b5-9ec7-418d-9e48-95f86e63f592
+*(one-page summary of what was converted, room by room, with the constraints
+checklist against the original brief)*
+
 ## Goal
 
 Investigate the existing KidsTown repo and replace it with a new
