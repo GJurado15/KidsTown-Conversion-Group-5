@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Township: Wonders</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<script>window.PAGE_DEPTH = 2;</script>
+<script src="../../assets/nav.js" defer></script>
+<script src="wonders-data.js" defer></script>
+<style>#content select { font-size: 1em; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../../graphics/township/";
+  const id = new URLSearchParams(window.location.search).get("id") || "zeus";
+  const w = WONDERS[id];
+  const container = document.getElementById("content");
+
+  if (!w) {
+    container.innerHTML = '<p>Unknown wonder. <a href="../index.html">Back to Township</a>.</p>';
+    return;
+  }
+
+  document.title = "KidsTown Township: " + w.pageTitle;
+  document.body.style.background = w.bg;
+
+  function renderQuiz() {
+    container.innerHTML =
+      '<table style="margin:0 auto;"><tr>' +
+      '<td style="text-align:center;"><img src="' + GFX + w.map + '" height="100" width="150" alt=""><br><b>' + w.mapLabel + "</b></td>" +
+      '<td style="text-align:center; padding:0 1em;"><font size="+4"><b>' + w.title + "</b></font></td>" +
+      '<td style="text-align:center;"><img src="' + GFX + w.flag + '" height="100" width="150" alt=""><br><b>' + w.flagLabel + "</b></td>" +
+      "</tr></table>" +
+      '<table style="margin:0 auto;"><tr>' +
+      '<td style="text-align:center; vertical-align:top;"><img src="' + GFX + w.sideImg + '" height="200" width="120" alt=""><br><b>' + w.sideLabel + "</b></td>" +
+      '<td style="max-width:340px; padding:0 1em;"><font size="+1"><b>' + w.intro + "</b></font></td>" +
+      '<td style="text-align:center; vertical-align:top;"><img src="' + GFX + w.side2Img + '" height="200" width="120" alt=""><br><b>' + w.side2Label + "</b></td>" +
+      "</tr></table>" +
+      '<h2>Game of Questions</h2>' +
+      '<table border="1" style="margin:0 auto;"><tr>' +
+      '<td style="text-align:center; width:300px;"><font size="+1"><b>' + w.q1.prompt + "</b></font><br>" +
+      '<select id="q1">' + w.q1.options.map((o) => "<option>" + o + "</option>").join("") + "</select></td>" +
+      '<td style="text-align:center; width:300px;"><font size="+1"><b>' + w.q2.prompt + "</b></font><br>" +
+      'Yes <input type="radio" name="q2" value="on"> No <input type="radio" name="q2" value="off"></td>' +
+      "</tr><tr><td colspan=\"2\" style=\"text-align:center;\">" +
+      '<font size="+1"><b>' + w.q3.prompt + "</b></font><br>" +
+      w.q3.letters
+        .map(
+          (l, i) =>
+            '<select id="q3-' + i + '"><option></option>' + l.options.map((o) => "<option>" + o + "</option>").join("") + "</select>"
+        )
+        .join(" ") +
+      "</td></tr></table>" +
+      '<p><button id="submit">Click Here to Solve the Puzzle</button></p>';
+
+    document.getElementById("submit").addEventListener("click", grade);
+  }
+
+  function grade() {
+    let correct = 0;
+    if (document.getElementById("q1").value === w.q1.correct) correct++;
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    if (q2 && q2.value === w.q2.correct) correct++;
+    const spelled = w.q3.letters.map((_, i) => document.getElementById("q3-" + i).value).join("");
+    const target = w.q3.letters.map((l) => l.correct).join("");
+    if (spelled === target) correct++;
+
+    renderResult(correct);
+  }
+
+  function renderResult(correct) {
+    if (correct === 3) {
+      container.innerHTML =
+        '<table style="margin:0 auto;"><tr><td style="background:lightgreen; text-align:center;"><font size="+4"><b>Good Job</b></font></td></tr>' +
+        '<tr><td style="background:lightgreen; text-align:center;"><font size="+2"><b>You answered all 3 questions correctly.<br>This view of the ' + w.title + " is your prize</b></font></td></tr>" +
+        '<tr><td style="text-align:center;"><br><img src="' + GFX + w.rewardImages[3] + '" alt=""><br></td></tr>' +
+        '<tr><td style="background:lightgreen; text-align:center;"><font size="+1"><b>' + w.rewardText + "</b></font></td></tr>" +
+        "</table>" +
+        '<p><a href="../index.html"><img src="' + GFX + 'wwm.jpg" width="50" height="50" alt=""><br><b>Main Page</b></a></p>';
+    } else {
+      const missed = 3 - correct;
+      container.innerHTML =
+        '<table style="margin:0 auto;"><tr><td style="background:lightgreen; text-align:center;"><font size="+4"><b>Almost there...</b></font></td></tr>' +
+        '<tr><td style="background:lightgreen; text-align:center;"><font size="+2"><b>Nice try, but you missed ' + missed + " question(s).<br>" +
+        "With your effort, you have earned this glimpse of the " + w.title + "</b></font></td></tr>" +
+        '<tr><td style="text-align:center;"><br><img src="' + GFX + w.rewardImages[correct] + '" alt=""><br></td></tr>' +
+        "</table>" +
+        '<p><a href="wonder.html?id=' + id + '"><img src="' + GFX + 'quest.jpg" width="50" height="50" alt=""><br><b>Try Again</b></a> &nbsp; ' +
+        '<a href="../index.html"><img src="' + GFX + 'wwm.jpg" width="50" height="50" alt=""><br><b>Main Page</b></a></p>';
+    }
+  }
+
+  renderQuiz();
+});
+</script>
+
+</body>
+</html>

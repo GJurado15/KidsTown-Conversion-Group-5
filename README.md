@@ -111,8 +111,22 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
   `farm/` — the Farm Field-Trip, a hub-and-spoke animal/crop encyclopedia
   (7 animals + 7 crops) driven by one `detail.html?type=&id=` engine +
   `farm-data.js`, same pattern as the Zoo room.
-- Root `index.html` is untouched for now (still the legacy demo showing the
-  broken CGI link) until enough rooms are migrated to cut over.
+- `site/township/` — the TownShip room: `wonders/` (4 "Wonders of the
+  World" pages — Zeus, Pyramids, Great Wall, Taj Mahal — each with a
+  3-part quiz: multiple choice, true/false, and a letter-by-letter
+  "construct the word" puzzle, graded client-side against
+  `wonders-data.js`) and `countries/` (a 6-round "guess the country from
+  its outline" game with 3 revealable clues per round, driven by
+  `match-data.js` + `country-data.js` — any of the 3 choices, right or
+  wrong, opens that country's fact page, matching the original's "even
+  wrong answers have interesting things to tell you" framing). This was
+  the largest room (52 scripts) — most of that size was ~30 near-duplicate
+  clue-reveal variants per round, the same stateless-CGI pattern seen in
+  City Hall, collapsed the same way.
+- All 9 rooms are now migrated. Root `index.html` is still the legacy demo
+  (showing the intentionally-broken CGI link, per the investigation notes
+  above) — cutting it over to `site/` is the next decision point, not yet
+  done.
 
 ## Progress log
 
@@ -126,6 +140,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-10 | Added the City Hall section under `site/cityhall/`: two branching detective stories ("The Bungled Bank Burglary" and "The Case of the Alien Photo") via one generic `story.html` engine + `story-data.js`. Collapsed ~30 legacy scripts (many byte-identical, differing only by which combination of clues the stateless CGI had recorded the player as having seen) down to one node per distinct piece of content, with clue-visited tracking moved to `sessionStorage`. Verified in a headless browser. |
 | 2026-09-10 | Added the ToyStore section under `site/toystore/`: 7 riddles, 5 "shape poems," and a 3-step bonus problem, ported from `scripts/toystore/*.pl`. Answers now reveal in place with a click instead of navigating to a separate CGI page per step. Verified in a headless browser. |
 | 2026-09-10 | Added the School section under `site/school/`: Word Fun (hangman) and Scramble (anagram) games sharing one word bank across 3 difficulty levels, plus the Farm Field-Trip (7-animal, 7-crop hub-and-spoke encyclopedia) under `farm/`. Ported from `scripts/school/*.pl` + `data/school/e_data*.txt`. Verified all pages and images in a headless browser. |
+| 2026-09-10 | Added the TownShip section under `site/township/`: 4 Wonders-of-the-World quiz pages and a 6-round Country Shape Matching Game (18 countries). **All 9 rooms are now migrated.** Verified every page, quiz, and referenced image (out of 124 graphics) in a headless browser. Next decision point: cutting root `index.html` over to `site/`. |
 
 ---
 

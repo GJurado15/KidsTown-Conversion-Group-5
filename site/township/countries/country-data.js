@@ -1,0 +1,217 @@
+// Country fact pages for the Shape Matching Game, ported from
+// scripts/township/{mat_aus,mat_fran,mat_jap,finland,jamaica,gabon,
+// ukraine,saudi,thai,spain,venez,antarc,madagas,china,mexico,laos,
+// turkey}.pl (Egypt.pl was read earlier for the lightest-pass scan).
+// `round` is which Shape Matching round this country's choice appears in,
+// for the "back to the game" link. Mexico is the last country in the last
+// round, so it thanks the player instead of linking back.
+const COUNTRIES = {
+  australia: {
+    name: "Australia",
+    round: 1,
+    intro: "The country is indeed Australia! This is where Australia is located in the world:",
+    images: ["match_co.gif", "Austcntx.gif"],
+    facts: [
+      "Australia is about the same size as the United States, but has much less usable land because the interior is mostly desert.",
+      "The capital of Australia is Canberra. Other major cities include Sydney, Melbourne, Adelaide, Perth, and Brisbane.",
+      "The original inhabitants are called Aborigines. The English settled the continent in 1788 to start a prison colony.",
+      "Australia has more sheep than any other country.",
+    ],
+  },
+  france: {
+    name: "France",
+    round: 1,
+    intro: "This is what France looks like:",
+    images: ["francmap.gif"],
+    facts: [
+      "Among France's kings were Louis II the Stammerer, Charles III the Simple, and Louis VI the Fat.",
+      "France is part of Europe. The capital of France is Paris. Other important cities are Marseille, Lyon, Toulouse, and Nice.",
+      "France's cuisine is considered to be one of the greatest in the world. Well-known French dishes include coq au vin (chicken in wine), escargot (snails), and vichyssoise (cold potato soup).",
+    ],
+  },
+  japan: {
+    name: "Japan",
+    round: 1,
+    intro: "This is what Japan looks like:",
+    images: ["japanmap.gif"],
+    facts: [
+      "Japan is an island country off the coast of mainland Asia. Its four main islands are Honshu, Hokkaido, Kyushu, and Shikoku.",
+      "Around one-fourth to one-third of all documents published in Japan are manga, or comic books.",
+      "The capital of Japan is Tokyo. Other major cities are Yokohama, Osaka, Nagoya, and Sapporo.",
+    ],
+  },
+  finland: {
+    name: "Finland",
+    round: 2,
+    intro: "The country is indeed Finland! This is where Finland is located in Europe:",
+    images: ["match2.gif", "Fincontx.gif"],
+    facts: [
+      "The capital of Finland is Helsinki. Other major cities include Espoo, Tampere, Vantaa, and Turku.",
+      "One of the most famous Finnish foods is lutefisk, which is made by soaking fish in lye. Finns also drink more coffee than any other people in the world.",
+      "There are about 60,000 lakes in Finland. Many were created when glaciers gouged them out.",
+      "Sauna baths are a central part of Finnish life.",
+    ],
+  },
+  egypt: {
+    name: "Egypt",
+    round: 2,
+    intro: "This is what Egypt looks like:",
+    images: ["Egypt.gif"],
+    facts: [
+      "Egypt is in North Africa. The capital of Egypt is Cairo. Other important cities are Alexandria, Luxor, and Aswan.",
+      "Egypt's national dish is fool, which is made from beans.",
+      "The first Arabic-language writer to win the Nobel Prize for Literature was the Egyptian Naguib Mahfouz.",
+    ],
+  },
+  jamaica: {
+    name: "Jamaica",
+    round: 2,
+    intro: "This is what Jamaica looks like:",
+    images: ["Jamaica.gif"],
+    facts: [
+      "The capital of Jamaica is Kingston.",
+      "Reggae music was invented in Jamaica. The best-known reggae musician was Bob Marley.",
+      "Jamaica is a popular island resort in the Caribbean Sea. It is part of the West Indies.",
+    ],
+  },
+  gabon: {
+    name: "Gabon",
+    round: 3,
+    intro: "This is what Gabon looks like:",
+    images: ["Gabon.gif"],
+    facts: [
+      'Gabon is in Africa. The capital of Gabon is Libreville. Libreville, which means "Free Town," was founded as a settlement for slaves freed from illegal slaving ships. Other cities include Port-Gentil and Franceville.',
+      "Gabon has the world's largest deposits of manganese.",
+      "The largest tribe in Gabon is the Fangs. Fang masks, which are heart-shaped, influenced the famous European artist Pablo Picasso.",
+    ],
+  },
+  ukraine: {
+    name: "Ukraine",
+    round: 3,
+    intro: "This is what Ukraine looks like:",
+    images: ["Ukraine.gif"],
+    facts: [
+      "Ukraine was part of the former Soviet Union and is now part of the Commonwealth of Independent States. The capital of Ukraine is Kiev. Other cities include Kharkiv, Donetske, Odessa, and Lviv.",
+      "The worst nuclear accident known to the world occurred in 1986 at the Chernobyl nuclear power plant.",
+      "Olympic gold-medalist figure skaters Oksana Baiul and Viktor Petrenko are both Ukrainian.",
+    ],
+  },
+  saudi: {
+    name: "Saudi Arabia",
+    round: 3,
+    intro: "The country is indeed Saudi Arabia! This is where Saudi Arabia is located in the Middle East:",
+    images: ["match3.gif", "Saudicon.gif", "midecon.gif"],
+    facts: [
+      "The capital of Saudi Arabia is Riyadh. Other important cities are Jeddah and Mecca.",
+      "Saudi Arabia contains the two holiest places of the religion of Islam: Mecca, the birthplace of the prophet Muhammad, and Medina, where Muhammad went in 622.",
+      'In the south of Saudi Arabia is the Rub\' al Khali, the "Empty Quarter," one of the world\'s largest deserts.',
+      "Saudi Arabia is almost entirely the creation of one man, King Ibn Saud.",
+    ],
+  },
+  thailand: {
+    name: "Thailand",
+    round: 4,
+    intro: "This is what Thailand looks like:",
+    images: ["thailand.gif"],
+    facts: [
+      "Thailand is in Asia. The capital of Thailand is Bangkok. Other important cities are Nonthaburi and Chiang Mai.",
+      "Thailand is the only Southeast Asian country that was never ruled by a European power.",
+      "Thailand used to be called Siam. The name was changed in 1949.",
+    ],
+  },
+  spain: {
+    name: "Spain",
+    round: 4,
+    intro: "This is what Spain looks like:",
+    images: ["Spain.gif"],
+    facts: [
+      "Spain is in Europe. The capital of Spain is Madrid. Other important cities are Barcelona, Valencia, and Seville.",
+      "Famous Spanish foods include gazpacho, a cold vegetable soup; flan, a baked caramel custard; and arroz con pollo, chicken with rice.",
+      "Flamenco music and flamenco dancing were created in Spain by gypsies.",
+    ],
+  },
+  venezuela: {
+    name: "Venezuela",
+    round: 4,
+    intro: "The country is indeed Venezuela! This is where Venezuela is located in South America:",
+    images: ["Match4.gif", "Venezcon.gif"],
+    facts: [
+      "The capital of Venezuela is Caracas. Other important cities are Maracaibo, Valencia, and Barquisimeto.",
+      "Venezuela is the third biggest supplier of oil in the world.",
+      "Animals that can be found in Venezuela are jaguars, monkeys, sloths, ocelots, bears, armadillos, flamingos, herons, guacharos (oilbirds), crocodiles, large snakes (anacondas and boas), and tarantulas (big hairy spiders).",
+      'Venezuela means "Little Venice." Spanish explorers gave it that name because they saw houses on stilts along the coast.',
+    ],
+  },
+  antarctica: {
+    name: "Antarctica",
+    round: 5,
+    intro: "This is what Antarctica looks like:",
+    images: ["Antarc.gif"],
+    facts: [
+      "Antarctica is not really a country. It is an uninhabited continent at the bottom of the world, covered with ice. Different countries have claimed parts of it because it has large mineral deposits.",
+      "Because Antarctica is so cold and people cannot raise food, it has no permanent human settlements. However, there are several research bases.",
+      "If the Antarctic ice sheet melted, the sea would rise at least 60 meters!",
+      "Antarctica is the coldest, windiest, highest, and driest continent on Earth.",
+    ],
+  },
+  madagascar: {
+    name: "Madagascar",
+    round: 5,
+    intro: "This is what Madagascar looks like:",
+    images: ["Madagas.gif"],
+    facts: [
+      "Madagascar is the world's fourth largest island. It lies off the coast of Africa. The capital is Antananarivo.",
+      "90 percent of the animals and plants on Madagascar — more than 150,000 species — are not found anywhere else on Earth.",
+      "Although Madagascar is part of Africa, many of the ancestors of the inhabitants came from Southeast Asia.",
+    ],
+  },
+  china: {
+    name: "China",
+    round: 5,
+    intro: "The country is indeed China! This is where China is located in Asia:",
+    images: ["match5.gif", "Chinacon.gif"],
+    facts: [
+      "The capital of China is Beijing. Other important cities are Chongqing, Shanghai, Tianjin, Canton, Wuhan, Shenyang, Nanjing, and Harbin.",
+      "Many basic inventions came out of China, including gunpowder, paper, kites, and silk.",
+      "Chinese is the language most spoken in the world.",
+      "Chop suey is commonly found in Chinese restaurants, but it wasn't created in China. It was invented by a Chinese cook in America.",
+    ],
+  },
+  mexico: {
+    name: "Mexico",
+    round: 6,
+    isLast: true,
+    intro: "The country is indeed Mexico! This is where Mexico is located in North America:",
+    images: ["match6.gif", "Mexicont.gif"],
+    facts: [
+      "The capital of Mexico is Mexico City. Other important cities are Guadalajara, Ecatepec, Nezahualcoyotl, and Puebla.",
+      "Several of the world's most famous resorts, such as Acapulco and Cancun, are in Mexico. In fact, in 1996, Mexico was the seventh most visited country by tourists.",
+      "Humans first learned to grow corn in Mexico. They may have learned to do this as early as 4500 BCE.",
+      "Mexico was the center of one of the great ancient civilizations, the Olmec. Although the Olmecs did not have draft animals, wheels, or iron tools, they still created huge sculptures, temples, and complex systems for managing water.",
+      "An ancient city in Mexico, Teotihuacan, was the largest city in the Americas for many centuries. It influenced the culture of the surrounding lands much as New York City, London, Paris, or Tokyo do today.",
+    ],
+  },
+  laos: {
+    name: "Laos",
+    round: 6,
+    intro: "This is what Laos looks like:",
+    images: ["Laos.gif"],
+    facts: [
+      "Laos is in Asia. The capital of Laos is Vientiane. Other cities include Sam Neua, Thakhek, and Vang Vieng.",
+      "Laos is completely surrounded by other countries; it has no connection to the sea. However, its most valuable export is electricity generated by hydroelectric power stations on the River Mekong.",
+      "Once part of Indochina (a group of Southeast Asia countries run by France), Laos has been independent since 1950.",
+      "Laos has no railroads and only very basic roads.",
+    ],
+  },
+  turkey: {
+    name: "Turkey",
+    round: 6,
+    intro: "This is what Turkey looks like:",
+    images: ["turkey.gif"],
+    facts: [
+      "Turkey is part of two continents: Europe and Asia (where it is known as Asia Minor or Anatolia). The capital of Turkey is Ankara. Other cities include Istanbul, Izmir, Bursa, and Gaziantep.",
+      'Istanbul is a very important historical city. It was first known as Byzantium but later became Constantinople when the Roman Empire moved its capital there in the year 330. The name "Istanbul" came from the Ottoman Turks, who conquered the city in 1435.',
+      "The highest mountain in Turkey is Mount Ararat, which is supposed to have been where Noah's Ark came to rest after the flood.",
+    ],
+  },
+};

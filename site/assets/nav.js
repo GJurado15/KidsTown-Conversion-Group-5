@@ -19,7 +19,7 @@
     { label: "Zoo", icon: "navbtn_zoo.gif", built: true, href: SITE_ROOT + "zoo/index.html" },
     { label: "ToyStore", icon: "navbtn_toystore.gif", built: true, href: SITE_ROOT + "toystore/index.html" },
     { label: "CityPark", icon: "navbtn_citypark.gif", built: true, href: SITE_ROOT + "citypark/index.html" },
-    { label: "TownShip", icon: "navbtn_township.gif", built: false },
+    { label: "TownShip", icon: "navbtn_township.gif", built: true, href: SITE_ROOT + "township/index.html" },
     { label: "Museum", icon: "navbtn_museum.gif", built: true, href: SITE_ROOT + "museum/index.html" },
     { label: "Help", icon: "navbtn_help.gif", built: true, href: SITE_ROOT + "help.html" },
   ];
