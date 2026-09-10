@@ -99,6 +99,12 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 - `site/assets/nav.js` — shared nav bar. Rooms not yet migrated render
   greyed-out with a "(coming soon)" label; flip a room's `built` flag once
   it's ready.
+- `site/toystore/` — the ToyStore room: 7 riddles (`riddle.html?n=`) and 5
+  "shape poems" (`shape.html?n=`, where the poem text is literally drawn in
+  the shape of the thing it describes — a star, a leaf, a tree...) each
+  driven by a small data file, plus a 3-step bonus problem (`bonus.html`).
+  Answers reveal in place with a click, no page navigation, unlike the
+  original's per-step CGI pages.
 - Root `index.html` is untouched for now (still the legacy demo showing the
   broken CGI link) until enough rooms are migrated to cut over.
 
@@ -112,6 +118,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-08 | Added the Zoo section under `site/zoo/`: lobby, world map, four region pages (Africa, Australia, Ocean, Polar Regions) each with an animal encyclopedia, and a single-question "ZooKeeper's Challenge" per region ported from the `d6_*.pl` files. Verified in a headless browser. |
 | 2026-09-08 | Added the Library section under `site/library/`: US map, 7 region pages, and generic data-driven engines for all 51 state fact pages, 3 word searches (AK/AZ/NE), 3 mad-libs "Wacky Web Tales" (CT/OR/WI), and 2 fill-in-the-blank quizzes (NY/DC) — ported from the 51-record `b_state_datafile.txt` and the corresponding `.pl` scripts. Verified in a headless browser. |
 | 2026-09-10 | Added the City Hall section under `site/cityhall/`: two branching detective stories ("The Bungled Bank Burglary" and "The Case of the Alien Photo") via one generic `story.html` engine + `story-data.js`. Collapsed ~30 legacy scripts (many byte-identical, differing only by which combination of clues the stateless CGI had recorded the player as having seen) down to one node per distinct piece of content, with clue-visited tracking moved to `sessionStorage`. Verified in a headless browser. |
+| 2026-09-10 | Added the ToyStore section under `site/toystore/`: 7 riddles, 5 "shape poems," and a 3-step bonus problem, ported from `scripts/toystore/*.pl`. Answers now reveal in place with a click instead of navigating to a separate CGI page per step. Verified in a headless browser. |
 
 ---
 

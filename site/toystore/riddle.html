@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Toystore: Riddles</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="riddle-data.js" defer></script>
+<style>body { background: yellow; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/toystore/";
+  const ORDINALS = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th"];
+  const n = Math.min(Math.max(Number(new URLSearchParams(window.location.search).get("n")) || 1, 1), RIDDLES.length);
+  const riddle = RIDDLES[n - 1];
+  const container = document.getElementById("content");
+
+  const nav =
+    RIDDLES.map((_, i) => {
+      const num = i + 1;
+      return num === n ? "<b>" + ORDINALS[i] + "</b>" : '<a href="riddle.html?n=' + num + '">' + ORDINALS[i] + "</a>";
+    }).join(" ") +
+    '<br><a href="shape.html?n=1">Shape Poems</a> &nbsp; <a href="bonus.html">Problem</a>';
+
+  function renderQuestion() {
+    document.title = "KidsTown: Toystore: Riddle " + n;
+    container.innerHTML =
+      "<h1>YOUR " + (n === 1 ? "FIRST" : ORDINALS[n - 1].toUpperCase()) + " RIDDLE:</h1>" +
+      '<p><font size="+2">' + riddle.poem + "</font></p>" +
+      "<h2>Can you guess it?</h2>" +
+      '<p><a href="#" id="reveal">Click here for the answer.</a></p>' +
+      "<p>Riddles &rarr; " + nav + "</p>";
+
+    document.getElementById("reveal").addEventListener("click", (e) => {
+      e.preventDefault();
+      renderAnswer();
+    });
+  }
+
+  function renderAnswer() {
+    container.innerHTML =
+      "<h1>DID YOU GUESS IT?</h1>" +
+      '<p><img src="' + GFX + riddle.answerImg + '" alt=""></p>' +
+      "<h1>" + riddle.answerName + "</h1>" +
+      '<p><a href="riddle.html?n=' + (n % RIDDLES.length + 1) + '">Click here to try another riddle.</a></p>';
+  }
+
+  renderQuestion();
+});
+</script>
+
+</body>
+</html>
