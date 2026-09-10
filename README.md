@@ -88,6 +88,14 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
   `wordsearch.html?state=ak|az|ne`, `tale.html?state=ct|or|wi` (mad-libs),
   and `fillin.html?state=ny|dc` (graded dropdown quiz). Ported from
   `scripts/library/*.pl` + `data/library/b_state_datafile.txt`.
+- `site/cityhall/` — the City Hall room: two branching detective stories
+  ("The Bungled Bank Burglary" and "The Case of the Alien Photo") driven by
+  one `story.html?case=bbb|cap&node=<id>` engine + `story-data.js`. The
+  legacy scripts hand-authored a near-duplicate page for every combination
+  of "which clues has the player already seen" (a stateless-CGI workaround);
+  here that collapses to one node per distinct piece of content, with
+  visited-clue tracking in `sessionStorage` unlocking "Solve the Case" once
+  all clues for a case have been seen.
 - `site/assets/nav.js` — shared nav bar. Rooms not yet migrated render
   greyed-out with a "(coming soon)" label; flip a room's `built` flag once
   it's ready.
@@ -103,6 +111,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-08 | Added the Museum section under `site/museum/`: lobby, Color Exhibition, the 6-page Rainbow story, and the Planetarium's Basic/Advanced solar-system picture quiz (ported from `wizard.pl` + `data/museum/ss1.dat`/`ss2.dat`). The quiz's session state (which questions were already played) moved from an encoded string threaded through hidden form fields into `sessionStorage`. Verified in a headless browser. |
 | 2026-09-08 | Added the Zoo section under `site/zoo/`: lobby, world map, four region pages (Africa, Australia, Ocean, Polar Regions) each with an animal encyclopedia, and a single-question "ZooKeeper's Challenge" per region ported from the `d6_*.pl` files. Verified in a headless browser. |
 | 2026-09-08 | Added the Library section under `site/library/`: US map, 7 region pages, and generic data-driven engines for all 51 state fact pages, 3 word searches (AK/AZ/NE), 3 mad-libs "Wacky Web Tales" (CT/OR/WI), and 2 fill-in-the-blank quizzes (NY/DC) — ported from the 51-record `b_state_datafile.txt` and the corresponding `.pl` scripts. Verified in a headless browser. |
+| 2026-09-10 | Added the City Hall section under `site/cityhall/`: two branching detective stories ("The Bungled Bank Burglary" and "The Case of the Alien Photo") via one generic `story.html` engine + `story-data.js`. Collapsed ~30 legacy scripts (many byte-identical, differing only by which combination of clues the stateless CGI had recorded the player as having seen) down to one node per distinct piece of content, with clue-visited tracking moved to `sessionStorage`. Verified in a headless browser. |
 
 ---
 
