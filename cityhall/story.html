@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown City Hall: Casebook Interactive Stories</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="story-data.js" defer></script>
+<style>
+  #story { max-width: 600px; margin: 0 auto; }
+  #story-img { float: left; margin: 0 1.5em 1em 0; }
+  #story-text { font-size: 1.2em; }
+  #story-choices { font-size: 1.1em; }
+  #story-choices hr { margin: 1em 0; }
+</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page" id="content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../graphics/cityhall/";
+  const params = new URLSearchParams(window.location.search);
+  const caseId = params.get("case") === "cap" ? "cap" : "bbb";
+  const story = STORIES[caseId];
+  const container = document.getElementById("content");
+  const visitedKey = "cityhall_visited_" + caseId;
+
+  function getVisited() {
+    try {
+      return JSON.parse(sessionStorage.getItem(visitedKey)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function markVisited(id) {
+    const visited = getVisited();
+    if (!visited.includes(id)) {
+      visited.push(id);
+      sessionStorage.setItem(visitedKey, JSON.stringify(visited));
+    }
+    return visited;
+  }
+
+  function renderNode(nodeId) {
+    const isEnd = nodeId === "end";
+    const node = isEnd ? story.end : story.nodes[nodeId];
+
+    if (!node) {
+      container.innerHTML = '<p>That page of the case is missing. <a href="index.html">Back to the Casebook</a>.</p>';
+      return;
+    }
+
+    const visited = isEnd ? getVisited() : markVisited(nodeId);
+    const solved = story.solveRequires && story.solveRequires.every((id) => visited.includes(id));
+
+    let choices = node.choices.map((c) => {
+      const href = c.href ? c.href : "story.html?case=" + caseId + "&node=" + c.to;
+      return '<a href="' + href + '">' + c.label + "</a>";
+    });
+
+    if (!isEnd && solved && !node.choices.some((c) => c.to === "end")) {
+      choices.push('<a href="story.html?case=' + caseId + '&node=end"><b>Solve the Case</b></a>');
+    }
+
+    container.innerHTML =
+      '<h1 class="center">' + story.title + "</h1>" +
+      '<div id="story">' +
+      '<img id="story-img" src="' + GFX + node.img + '" alt="">' +
+      '<div id="story-text" style="color:' + node.color + '">' + node.text + "</div>" +
+      '<div style="clear:both;"></div>' +
+      '<div id="story-choices"><hr>' + choices.join(" &nbsp;or&nbsp; ") + "<hr></div>" +
+      "</div>" +
+      '<p class="center"><a href="index.html">Back to Casebook Interactive Stories</a></p>';
+  }
+
+  renderNode(params.get("node") || story.start);
+});
+</script>
+
+</body>
+</html>

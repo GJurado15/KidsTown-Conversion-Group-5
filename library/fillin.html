@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Library: Fill in the Blank</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="fillin-data.js" defer></script>
+<style>body { background: #A2F9CD; } select { font-size: 1em; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page" id="content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../graphics/library/";
+  const key = new URLSearchParams(window.location.search).get("state");
+  const quiz = FILLINS[key];
+  const container = document.getElementById("content");
+
+  if (!quiz) {
+    container.innerHTML = '<p>Unknown quiz. <a href="index.html">Back to the Library</a>.</p>';
+    return;
+  }
+
+  document.title = "KidsTown Library: " + quiz.heading;
+
+  function renderForm() {
+    const questionsHtml = quiz.questions
+      .map((q, i) => {
+        const options = q.options.map((o) => "<option>" + o + "</option>").join("");
+        return "<p>" + q.prompt + '</p><select name="q' + i + '" size="' + q.options.length + '">' + options + "</select><hr>";
+      })
+      .join("");
+
+    container.innerHTML =
+      '<table style="margin:0 auto;"><tr>' +
+      '<td><img src="' + GFX + quiz.map + '" alt="" width="150"></td>' +
+      '<td><font size="+5" color="' + quiz.color + '"><em>' + quiz.heading + "</em></font></td>" +
+      "</tr></table>" +
+      "<h3>" + quiz.intro + "</h3><hr>" +
+      '<form id="fillin-form">' + questionsHtml + '<p class="center"><input type="submit" value="Learn More!"></p></form>' +
+      '<p class="center"><a href="' + quiz.backHref + '">Back To ' + quiz.backLabel + "</a></p>";
+
+    document.getElementById("fillin-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const answers = quiz.questions.map((q, i) => e.target.elements["q" + i].value);
+      renderResults(answers);
+    });
+  }
+
+  function renderResults(answers) {
+    const resultsHtml = quiz.questions
+      .map((q, i) => {
+        const correct = answers[i] === q.correct;
+        const verdict = correct
+          ? "<p><font size='+2'>You're right!</font></p>"
+          : "<p><font size='+2'>Your answer was: " + answers[i] + "</font></p><p><font size='+2'>The correct answer is:</font></p>";
+        const items = q.items.map((item) => "<li>" + item + "</li>").join("");
+        return verdict + "<p>" + q.paragraph + "</p><ul>" + items + "</ul><hr>";
+      })
+      .join("");
+
+    container.innerHTML =
+      "<h2>Answers</h2>" +
+      "<h3>Here are the answers to the selections you made. The correct answers are in <em>bold</em>, with more information about the topic and the other choices.</h3><hr>" +
+      resultsHtml +
+      '<p class="center"><a href="' + quiz.backHref + '">Back To ' + quiz.backLabel + "</a></p>";
+  }
+
+  renderForm();
+});
+</script>
+
+</body>
+</html>

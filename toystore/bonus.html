@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Toystore: Bonus Problem</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<style>body { background: yellow; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="content"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../graphics/toystore/";
+  const container = document.getElementById("content");
+
+  function renderProblem() {
+    container.innerHTML =
+      "<h2>KidsTown, ToyStore</h2>" +
+      "<h1>BONUS PROBLEM:</h1>" +
+      '<p><img src="' + GFX + 'pingpong.gif" width="300" height="200" alt=""></p>' +
+      "<h3>Ping pong (table tennis) is a fun game to play,<br>" +
+      "but sometimes the ball gets away and rolls into a hole.<br>" +
+      "That is exactly what happened to this man.<br>" +
+      "The problem is, he can not reach the ball.</h3>" +
+      "<h2>Can you help him retrieve the ball?</h2>" +
+      '<p><a href="#" id="see-tools">Click here to see the available tools.</a></p>' +
+      '<p><a href="riddle.html?n=1">Riddles</a> &nbsp; <a href="shape.html?n=1">Shape Poems</a></p>';
+
+    document.getElementById("see-tools").addEventListener("click", (e) => {
+      e.preventDefault();
+      renderTools();
+    });
+  }
+
+  function renderTools() {
+    container.innerHTML =
+      "<h2>KidsTown, ToyStore</h2>" +
+      "<h1>HERE ARE THE AVAILABLE TOOLS:</h1>" +
+      '<p><img src="' + GFX + 'tools.gif" width="300" height="200" alt=""></p>' +
+      "<h3>There is a bucket of water, a broom, a shovel, a roll of string, and a dust pan.</h3>" +
+      "<h2>What tools would you use to get the ball out of the hole?</h2>" +
+      '<p><a href="#" id="see-answer">Click here to see one answer.</a></p>';
+
+    document.getElementById("see-answer").addEventListener("click", (e) => {
+      e.preventDefault();
+      renderAnswer();
+    });
+  }
+
+  function renderAnswer() {
+    container.innerHTML =
+      "<h2>KidsTown, ToyStore</h2>" +
+      "<h1>DID YOU THINK OF THE WATER?</h1>" +
+      '<p><img src="' + GFX + 'ansprob.gif" width="300" height="200" alt=""></p>' +
+      "<h3>There are multiple ways to retrieve the ping pong ball.<br>" +
+      "A simple way is to fill the hole with the water from the bucket,<br>" +
+      "and let the ball float to the top of the hole.<br>" +
+      "From there, you can reach and grab it.</h3>" +
+      '<p><a href="riddle.html?n=1">Riddles</a> &nbsp; <a href="shape.html?n=1">Shape Poems</a></p>';
+  }
+
+  renderProblem();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown Township: Country Shape Matching Game</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<script>window.PAGE_DEPTH = 2;</script>
+<script src="../../assets/nav.js" defer></script>
+<script src="match-data.js" defer></script>
+<style>body { background: #66FFFF; } #round-content button.clue { display: block; margin: 0.3em 0; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="round-content">Loading...</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/township/";
+  const num = Math.min(Math.max(Number(new URLSearchParams(window.location.search).get("id")) || 1, 1), 6);
+  const round = MATCH_ROUNDS[num];
+  const container = document.getElementById("round-content");
+  const revealed = [false, false, false];
+
+  function render() {
+    const clueButtons = round.clues
+      .map((clue, i) =>
+        revealed[i]
+          ? '<p><b style="color:#FF0080;">' + clue + "</b></p>"
+          : '<p><button class="clue" data-i="' + i + '">Show clue ' + (i + 1) + "</button></p>"
+      )
+      .join("");
+
+    const choices = round.choices
+      .map((c) => '<a href="country.html?id=' + c.id + '"><b>' + c.label + "</b></a>")
+      .join("<br>");
+
+    container.innerHTML =
+      '<h1><i>What Country Is This?</i></h1>' +
+      '<table style="margin:0 auto;"><tr>' +
+      '<td style="vertical-align:middle;">' + clueButtons + "</td>" +
+      '<td><img src="' + GFX + round.shapeImg + '" alt="Country shape"></td>' +
+      '<td style="vertical-align:top; font-size:1.2em;">' + choices + "</td>" +
+      "</tr></table>" +
+      '<p><a href="index.html">Back to the Country Shape Matching Game</a></p>';
+
+    container.querySelectorAll("button.clue").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        revealed[Number(btn.dataset.i)] = true;
+        render();
+      });
+    });
+  }
+
+  render();
+});
+</script>
+
+</body>
+</html>
