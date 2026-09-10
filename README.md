@@ -105,6 +105,12 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
   driven by a small data file, plus a 3-step bonus problem (`bonus.html`).
   Answers reveal in place with a click, no page navigation, unlike the
   original's per-step CGI pages.
+- `site/school/` — the School room: Word Fun (a hangman-style guessing
+  game, `wordfun.html`) and Scramble (an anagram game, `scramble.html`)
+  share one `word-data.js` word bank across 3 difficulty levels; plus
+  `farm/` — the Farm Field-Trip, a hub-and-spoke animal/crop encyclopedia
+  (7 animals + 7 crops) driven by one `detail.html?type=&id=` engine +
+  `farm-data.js`, same pattern as the Zoo room.
 - Root `index.html` is untouched for now (still the legacy demo showing the
   broken CGI link) until enough rooms are migrated to cut over.
 
@@ -119,6 +125,7 @@ image assets. It is plain HTML/CSS/JS — no framework, no build step.
 | 2026-09-08 | Added the Library section under `site/library/`: US map, 7 region pages, and generic data-driven engines for all 51 state fact pages, 3 word searches (AK/AZ/NE), 3 mad-libs "Wacky Web Tales" (CT/OR/WI), and 2 fill-in-the-blank quizzes (NY/DC) — ported from the 51-record `b_state_datafile.txt` and the corresponding `.pl` scripts. Verified in a headless browser. |
 | 2026-09-10 | Added the City Hall section under `site/cityhall/`: two branching detective stories ("The Bungled Bank Burglary" and "The Case of the Alien Photo") via one generic `story.html` engine + `story-data.js`. Collapsed ~30 legacy scripts (many byte-identical, differing only by which combination of clues the stateless CGI had recorded the player as having seen) down to one node per distinct piece of content, with clue-visited tracking moved to `sessionStorage`. Verified in a headless browser. |
 | 2026-09-10 | Added the ToyStore section under `site/toystore/`: 7 riddles, 5 "shape poems," and a 3-step bonus problem, ported from `scripts/toystore/*.pl`. Answers now reveal in place with a click instead of navigating to a separate CGI page per step. Verified in a headless browser. |
+| 2026-09-10 | Added the School section under `site/school/`: Word Fun (hangman) and Scramble (anagram) games sharing one word bank across 3 difficulty levels, plus the Farm Field-Trip (7-animal, 7-crop hub-and-spoke encyclopedia) under `farm/`. Ported from `scripts/school/*.pl` + `data/school/e_data*.txt`. Verified all pages and images in a headless browser. |
 
 ---
 

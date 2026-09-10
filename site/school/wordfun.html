@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown: School: Word Fun</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="word-data.js" defer></script>
+<style>
+  #letters button { width: 2.2em; margin: 2px; font-weight: bold; }
+  #letters button:disabled { opacity: 0.35; }
+  #blanks { font-size: 2em; letter-spacing: 0.4em; font-family: monospace; }
+</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="content"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/school/";
+  const container = document.getElementById("content");
+  let level = "easy";
+  let entry, guessed, tries;
+
+  function renderIntro() {
+    container.innerHTML =
+      "<h1>Welcome to the Word Fun Activity</h1>" +
+      "<hr>" +
+      '<p><a href="wordfun-help.html">Help</a></p>' +
+      "<h3>Please choose a level of difficulty by selecting a level below.<br>Click \"Start Game\" to begin playing.</h3>" +
+      '<table style="margin:0 auto;">' +
+      '<tr><td><b>Level</b></td><td><b>Example Words</b></td></tr>' +
+      '<tr><td><label><input type="radio" name="level" value="easy" checked> Easy</label></td><td>fish, ball, and bed</td></tr>' +
+      '<tr><td><label><input type="radio" name="level" value="medium"> Medium</label></td><td>basketball, flying, and staple</td></tr>' +
+      '<tr><td><label><input type="radio" name="level" value="difficult"> Difficult</label></td><td>stethoscope and application</td></tr>' +
+      "</table>" +
+      '<p><button id="start">Start Game</button></p>';
+
+    container.querySelectorAll('input[name="level"]').forEach((r) => {
+      r.addEventListener("change", (e) => (level = e.target.value));
+    });
+    document.getElementById("start").addEventListener("click", startGame);
+  }
+
+  function startGame() {
+    const words = WORD_LEVELS[level];
+    entry = words[Math.floor(Math.random() * words.length)];
+    guessed = [];
+    tries = 0;
+    renderGame();
+  }
+
+  function currentBlanks() {
+    return entry.word
+      .toUpperCase()
+      .split("")
+      .map((ch) => (guessed.includes(ch) ? ch : "_"))
+      .join(" ");
+  }
+
+  function renderGame() {
+    container.innerHTML =
+      "<h2>Select a letter</h2>" +
+      '<p id="blanks">' + currentBlanks() + "</p>" +
+      '<div id="letters"></div>';
+
+    const lettersDiv = document.getElementById("letters");
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach((ch) => {
+      const btn = document.createElement("button");
+      btn.textContent = ch;
+      btn.disabled = guessed.includes(ch);
+      btn.addEventListener("click", () => guessLetter(ch));
+      lettersDiv.appendChild(btn);
+    });
+  }
+
+  function guessLetter(ch) {
+    if (guessed.includes(ch)) return;
+    guessed.push(ch);
+    tries++;
+    const word = entry.word.toUpperCase();
+    const solved = word.split("").every((c) => guessed.includes(c));
+    if (solved) {
+      renderWin();
+    } else {
+      renderGame();
+    }
+  }
+
+  function renderWin() {
+    const word = entry.word.toLowerCase();
+    const sentence = entry.sentence.replace(
+      new RegExp(word, "gi"),
+      '<font color="blue">' + word + "</font>"
+    );
+    container.innerHTML =
+      "<h3>That's correct! The word is <i>" + word + "</i>.<br>" +
+      "Good job, you got it in " + tries + (tries === 1 ? " try!" : " tries!") + "</h3>" +
+      '<img src="' + GFX + entry.graphic + '" alt=""><h3>' + sentence + "</h3>" +
+      '<p><button id="again">Play Again</button> <button id="change">Change Level</button></p>';
+
+    document.getElementById("again").addEventListener("click", startGame);
+    document.getElementById("change").addEventListener("click", renderIntro);
+  }
+
+  renderIntro();
+});
+</script>
+
+</body>
+</html>

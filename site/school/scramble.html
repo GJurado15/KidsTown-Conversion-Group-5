@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KidsTown: School: Scramble Game</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.PAGE_DEPTH = 1;</script>
+<script src="../assets/nav.js" defer></script>
+<script src="word-data.js" defer></script>
+<style>body { background: #CCFFFF; }</style>
+</head>
+<body>
+
+<div id="nav-bar"></div>
+
+<div class="page center" id="content"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const GFX = "../../graphics/school/";
+  const container = document.getElementById("content");
+  let level = "easy";
+  let entry, scrambled, tries;
+
+  function scramble(word) {
+    let letters, result;
+    do {
+      letters = word.split("");
+      for (let i = letters.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [letters[i], letters[j]] = [letters[j], letters[i]];
+      }
+      result = letters.join("");
+    } while (result === word);
+    return result;
+  }
+
+  function renderIntro() {
+    container.innerHTML =
+      "<h1>Welcome to the Word Scramble Game</h1>" +
+      '<p><a href="scramble-help.html">Help</a></p>' +
+      "<h3>Please choose a level of difficulty by selecting a level below.<br>Click \"Start Game\" to begin playing.</h3>" +
+      '<p><label><input type="radio" name="level" value="easy" checked> short words</label><br>' +
+      '<label><input type="radio" name="level" value="medium"> longer words</label><br>' +
+      '<label><input type="radio" name="level" value="difficult"> longest words</label></p>' +
+      '<p><button id="start">Start Game</button></p>';
+
+    container.querySelectorAll('input[name="level"]').forEach((r) => {
+      r.addEventListener("change", (e) => (level = e.target.value));
+    });
+    document.getElementById("start").addEventListener("click", startGame);
+  }
+
+  function startGame() {
+    const words = WORD_LEVELS[level];
+    entry = words[Math.floor(Math.random() * words.length)];
+    scrambled = scramble(entry.word.toUpperCase());
+    tries = 0;
+    renderGame("");
+  }
+
+  function renderGame(errorText, lastGuess) {
+    container.innerHTML =
+      "<h2>What is this picture?</h2>" +
+      '<img src="' + GFX + entry.graphic + '" alt="">' +
+      (errorText ? "<h3>" + errorText + "</h3>" : "") +
+      '<h3><pre>Scrambled Word:  ' + scrambled + "\n\n" +
+      'Enter Guess: <input type="text" id="guess" size="' + entry.word.length + '" maxlength="' + entry.word.length + '">\n' +
+      (lastGuess ? "Your Last Guess:  " + lastGuess + "\n" : "") +
+      "</pre></h3>" +
+      '<p><button id="submit">Continue</button></p>';
+
+    const input = document.getElementById("guess");
+    input.focus();
+    const submit = () => checkGuess(input.value);
+    document.getElementById("submit").addEventListener("click", submit);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submit();
+    });
+  }
+
+  function checkGuess(raw) {
+    const guess = raw.toUpperCase();
+    const word = entry.word.toUpperCase();
+
+    if (guess.length !== word.length) {
+      renderGame("The input should be of length " + word.length + ".", guess);
+      return;
+    }
+    if (!/^[A-Z]+$/.test(guess)) {
+      renderGame("Only use letters for input.", guess);
+      return;
+    }
+
+    tries++;
+    if (guess === word) {
+      renderWin();
+    } else {
+      renderGame("", guess);
+    }
+  }
+
+  function renderWin() {
+    const word = entry.word.toLowerCase();
+    const sentence = entry.sentence.replace(new RegExp(word, "gi"), '<font color="blue">' + word + "</font>");
+    container.innerHTML =
+      "<h3>That's correct! The word is <i>" + word + "</i>.<br>" +
+      "Good job, you got it in " + tries + (tries === 1 ? " try!" : " tries!") + "</h3>" +
+      '<img src="' + GFX + entry.graphic + '" alt=""><h2>' + sentence + "</h2>" +
+      '<p><button id="again">Play Again</button> <button id="change">Change Level</button></p>';
+
+    document.getElementById("again").addEventListener("click", startGame);
+    document.getElementById("change").addEventListener("click", renderIntro);
+  }
+
+  renderIntro();
+});
+</script>
+
+</body>
+</html>
