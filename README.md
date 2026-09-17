@@ -129,6 +129,131 @@ reference, and a live copy of the legacy demo page is preserved at
   clue-reveal variants per round, the same stateless-CGI pattern seen in
   City Hall, collapsed the same way.
 
+## Developer Guide
+
+Everything you need to work on this project is in this repo. No external docs, no special tools.
+
+### Running locally
+
+No build step, no install. Two options:
+
+1. **Simple**: open `index.html` directly in your browser (some features that use `fetch` or modules may not work with `file://` URLs)
+2. **Recommended**: start a local server from the repo root:
+   ```bash
+   python3 -m http.server 8000
+   ```
+   Then open `http://localhost:8000` in your browser. Any language's static server works (e.g., `npx serve`, `php -S localhost:8000`).
+
+### Project structure
+
+```
+/                        Repo root = site root (served by GitHub Pages)
+├── index.html           Home page (town map)
+├── about.html           "Making of KidsTown" history
+├── help.html            Help page
+├── participants.html    Project participants
+│
+├── assets/
+│   ├── style.css        Shared styles (all pages link to this)
+│   └── nav.js           Shared nav bar (all pages load this)
+│
+├── citypark/            City Park room (interactive story)
+├── cityhall/            City Hall room (detective stories)
+├── library/             Library room (U.S. geography + activities)
+├── zoo/                 Zoo room (animal encyclopedia)
+├── museum/              Museum room (rainbow story + space quiz)
+├── school/              School room (word games + farm trip)
+├── toystore/            Toy Store room (riddles + poems)
+├── township/            Township room (wonders + country game)
+│
+├── graphics/            All original images (~458 files), organized by room
+│
+├── cgi-bin/             LEGACY REFERENCE ONLY -- original Perl dispatcher
+├── scripts/             LEGACY REFERENCE ONLY -- original 223 .pl files
+├── data/                LEGACY REFERENCE ONLY -- original flat data files
+└── legacy/              LEGACY REFERENCE ONLY -- original landing page
+```
+
+### The data-driven template pattern
+
+Most rooms use the same pattern. Instead of one HTML file per piece of content, there is:
+
+- **One HTML template** (e.g., `library/state.html`) -- handles layout and rendering
+- **One JS data file** (e.g., `library/state-data.js`) -- holds all the content as a JavaScript object
+- **URL query parameters** select which entry to show (e.g., `state.html?state=5` shows California)
+
+The template reads the query parameter, looks up the matching entry in the data file, and renders it. This pattern is used in: Library (states, word searches, tales, fill-ins), Zoo (challenges), Museum (planetarium quiz), School (farm details), Toy Store (riddles, shape poems), Township (wonders, country rounds), City Park (story pages), and City Hall (story nodes).
+
+### How to add content
+
+**Add a new riddle to Toy Store:**
+1. Open `toystore/riddle-data.js`
+2. Add a new entry following the existing format
+3. The template (`riddle.html`) will pick it up automatically via `?n=<new number>`
+4. Add a link to it from `toystore/index.html`
+
+**Add a new state to Library:**
+1. Open `library/state-data.js`
+2. Add a new numbered entry with name, capital, bird, flower, etc.
+3. Add the state's map and flag images to `graphics/library/`
+4. Link to it from the appropriate `library/regions/*.html` page
+
+**Add a new room:**
+1. Create a new folder (e.g., `newroom/`)
+2. Add an `index.html` as the room's entry page. Include these lines in `<head>`:
+   ```html
+   <link rel="stylesheet" href="../assets/style.css">
+   <script>window.PAGE_DEPTH = 1;</script>
+   <script src="../assets/nav.js" defer></script>
+   ```
+3. Add the room's nav button image to `graphics/home/`
+4. Open `assets/nav.js` and add an entry to the `rooms` array
+5. Add a clickable area to the image map in `index.html` (root)
+
+The same steps apply to any room -- the pattern is always: edit the data file for content changes, edit the template only if the layout needs to change.
+
+### PAGE_DEPTH explained
+
+Every page sets `window.PAGE_DEPTH` in a script tag before loading `nav.js`. This tells the nav bar how many folders deep the page is, so it can build correct relative paths to other rooms and graphics.
+
+- `PAGE_DEPTH = 0` -- pages at the root (`index.html`, `about.html`)
+- `PAGE_DEPTH = 1` -- pages one folder deep (`library/index.html`, `zoo/africa.html`)
+- `PAGE_DEPTH = 2` -- pages two folders deep (`museum/planetarium/quiz.html`, `school/farm/detail.html`)
+
+If you add a page in a new subfolder, set this value to match its depth.
+
+### Client-side state
+
+The site has no server, so any data that needs to persist between pages lives in the browser:
+
+| What | Where | Why |
+|------|-------|-----|
+| Visitor name (City Park) | `localStorage` | Persists even if the browser is closed and reopened |
+| Clues seen (City Hall) | `sessionStorage` | Resets when the browser tab is closed |
+| Quiz progress (Museum) | `sessionStorage` | Resets when the browser tab is closed |
+| Page selection | URL query parameters | Stateless, bookmarkable, shareable |
+
+### How to contribute (PR workflow)
+
+Do not commit directly to `main`. For every change:
+
+1. Create a branch: `git checkout -b your-branch-name`
+2. Make your changes and commit: `git add <files>` then `git commit -m "description"`
+3. Push: `git push -u origin your-branch-name`
+4. Open a pull request on GitHub
+5. Wait for at least one teammate to review before merging
+
+### What not to touch
+
+The folders `cgi-bin/`, `scripts/`, `data/`, and `legacy/` contain the original 1998 Perl/CGI source. They are kept for reference only so the old behavior can always be compared against the new site. Do not modify, delete, or depend on these files in the live site.
+
+### Other documentation
+
+- `Architectural_Mapping.md` -- table mapping every old Perl script to its new replacement
+- `CS39AH_Worksheet_Parts1-8.md` -- architecture investigation findings (Parts 1-8)
+
+---
+
 ## Progress log
 
 | Date | Change |
